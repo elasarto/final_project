@@ -316,6 +316,9 @@ class RhymeGenerator:
             self.my_generator = MarkovTextGenerator(chain_size)
             #self.my_generator.update('dorian_eng.txt')
             self.my_generator.update('lyrics1.txt')
+            self.my_generator.update('lyrics2.txt')
+            self.my_generator.update('lyrics3.txt')
+            self.my_generator.update('lyrics4.txt')
             self.my_generator.create_dump()
             pickle.dump(self.my_generator, open(filename, "wb"))
         if isfile(filename_rev):

@@ -13,7 +13,7 @@ from flask import (
 from markov_generator import RhymeGenerator
 
 app=Flask(__name__)
-gen = RhymeGenerator("markov.pickle", "markov_rev.pickle")
+gen = RhymeGenerator("markov.pickle")
 
 @app.route('/')
 def home():

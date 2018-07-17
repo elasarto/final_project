@@ -130,7 +130,8 @@ class MarkovTextGenerator(object):
         kwargs["start_words"] = start_words
         while True:
             tuple_key = tuple(key_array)
-            _variants = self.base_dict.get(tuple_key, None)
+            # limit number of options per key to 1000
+            _variants = self.base_dict.get(tuple_key, None)[:1000]
             if not _variants:
                 break
             next_token, kwargs_update = self.get_optimal_variant(
@@ -155,31 +156,41 @@ class MarkovTextGenerator(object):
     def start_generation(self, *start_words, **kwargs):
         out_text = ""
         reverse = kwargs.pop("reverse", None) != None
-        _need_capialize = not reverse
+        _need_capitalize = not reverse
         last_token = ""
-        last_text = ""
+        last_word = ""
+        last_word_text = ""
         for token in self._get_generate_tokens(*start_words, **kwargs):
             if token in "$^":
                 if not reverse:
-                    _need_capialize = True
+                    _need_capitalize = True
                 continue
-            if self.words.search(token):
+            if self.words.search(token) or self.symbols.search(token):
                 if reverse:
-                    out_text = " " + out_text
+                    # don't add space if the next token is a symbol
+                    if not self.symbols.search(last_token):
+                        out_text = " " + out_text
                 else:
                     out_text = out_text + " "
-                # save last word
+                if reverse and self.finish.search(token):
+                    # new sentence - capitalize starting from the last word
+                    out_text = " " + last_word.title() + last_word_text
+            if self.words.search(token) or self.symbols.search(token):
+                # save the last token (could be a word or a symbol)
                 last_token = token
-                last_text = out_text
-            if _need_capialize:
-                _need_capialize = False
+            if self.words.search(token):
+                # save the last word and the current version of the text 
+                last_word = token
+                last_word_text = out_text
+            if _need_capitalize:
+                _need_capitalize = False
                 token = token.title()
             if reverse:
                 out_text = token + out_text
             else:
                 out_text = out_text + token
         if reverse:
-            out_text = last_token.title() + last_text
+            out_text = last_word.title() + last_word_text
         return out_text.strip()
 
     def get_start_array(self, *start_words, **kwargs):
@@ -200,6 +211,7 @@ class MarkovTextGenerator(object):
                 _variants.append(tokens)
                 _weights.append(weight)
                 tokens_per_word += 1
+                # limit number of tokens per word to 1000
                 if (tokens_per_word > 1000):
                     break
 
@@ -308,29 +320,25 @@ class MarkovTextGenerator(object):
 
 class RhymeGenerator:
 
-    def __init__(self, filename, filename_rev):
-        chain_size = 3
+    def __init__(self, filename):
         if isfile(filename):
-            self.my_generator = pickle.load(open(filename, "rb"))
+            self.my_rev_generator = pickle.load(open(filename, "rb"))
         else:
-            self.my_generator = MarkovTextGenerator(chain_size)
+            chain_size = 3
+            my_generator = MarkovTextGenerator(chain_size)
             #self.my_generator.update('dorian_eng.txt')
-            self.my_generator.update('lyrics1.txt')
-            self.my_generator.update('lyrics2.txt')
-            self.my_generator.update('lyrics3.txt')
-            self.my_generator.update('lyrics4.txt')
-            self.my_generator.create_dump()
-            pickle.dump(self.my_generator, open(filename, "wb"))
-        if isfile(filename_rev):
-            self.my_rev_generator = pickle.load(open(filename_rev, "rb"))
-        else:
+            my_generator.update('lyrics1.txt')
+            my_generator.update('lyrics2.txt')
+            my_generator.update('lyrics3.txt')
+            my_generator.update('lyrics4.txt')
+            my_generator.create_dump()
             self.my_rev_generator = MarkovTextGenerator(chain_size)
-            self.my_rev_generator.update_reverse_tokens(self.my_generator.tokens_array)
-            pickle.dump(self.my_rev_generator, open(filename_rev, "wb"))
+            self.my_rev_generator.update_reverse_tokens(my_generator.tokens_array)
+            pickle.dump(self.my_rev_generator, open(filename, "wb"))
 
     def generate(self, user_input):
         to_rhyme = user_input
-        user_syl_count = self.my_generator.syllable_count(user_input)
+        user_syl_count = self.my_rev_generator.syllable_count(user_input)
         print(user_input)
         word = (to_rhyme[to_rhyme.rfind(' ')+1:])
         word_list = list(pronouncing.rhymes(word))[:10]

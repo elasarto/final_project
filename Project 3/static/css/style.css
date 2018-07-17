@@ -1,0 +1,92 @@
+#main{
+
+    background-color:rgb(255, 255, 255);
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: left;
+    font-size:80%;
+    padding:25px;
+    margin-top:50px;
+    margin-left:20px;
+    margin-right:20px;
+    
+}   
+    
+#data-table{
+
+    background-color:rgb(255, 255, 255);
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(0, 0, 0);
+    text-align: left;
+    font-size:80%;
+    padding:25px;
+    margin-top:50px;
+    margin-bottom:90px;
+    margin-left:20px;
+    margin-right:20px; 
+}
+
+h6, h5{
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(56, 56, 56);
+}           
+  
+body{
+    
+    background-color:rgb(153, 224, 203);
+    margin:0;    
+    }
+         
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width:100%;
+    margin:0;
+    background-color: rgb(92, 94, 93);
+    color: white;
+    text-align: center;
+    font-size:75%;
+    padding-top:5px;
+    }
+.mr-sm-2 {
+    width: 100%;
+}
+  
+  .chart::before {
+    position: absolute;
+    top: 50px;
+    left: 300px;
+    z-index: -1;
+    display: block;
+    width: 400px;
+    height: 300px;
+    content: " ";
+    opacity: 0.3;
+  }
+  
+  .tooltip {
+    position: absolute;
+    width: 135px;
+    height: 60px;
+    padding: 2px;
+    padding-top: 8px;
+    font: 12px sans-serif;
+    color: #000;
+    text-align: center;
+    background: #c3eee0;
+    border: 0;
+    border-radius: 10px;
+  }
+
+  .bar {
+    fill: tomato;
+  }
+  
+  .bar:hover {
+    fill: coral;
+  }  
+  nav.navbar-nav.nav-item  {
+    color: white;
+}   
+#searchbar input[type=search]{width:800px !important;
+}

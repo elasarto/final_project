@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Lyrics Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+        <header>
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                        <a class="navbar-brand" href="index.html">Song Lyric and Song Popularity Predictor</a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                      
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                          <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown link-item">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Analyses
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                      <a class="dropdown-item" href="lyric_finder.html">Song Lyric Finder</a>
+                                      <a class="dropdown-item" href="popularity.html">Song Popularity Finder</a>
+                                      <a class="dropdown-item" href="lyrics_analysis.html">Lyrics Analysis</a>
+                                      <a class="dropdown-item" href="popularity_analysis.html">Popularity Analysis</a>
+                                    </div>
+                                  </li>
+                            <li class="nav-item link-item">
+                              <a class="nav-link" href="comparison.html">Comparison</a>
+                            </li>
+                            <li class="nav-item link-item">
+                                    <a class="nav-link" href="data.html">Data</a>
+                                  </li>
+                          </ul>
+                        </div>
+                      </nav>        
+        </header>
+<div class='container'>
+    <table background = "https://github.com/elasarto/final_project/blob/markov_lyrics_gen/pattern001.jpg?raw=true" width = "100%" height = "100">
+        </table>
+<h2><i>If I could melt your heart... A la carte</i></h2>
+<div class='row'>
+    <div class="col-md-6">
+    <div class="form-group">
+        <textarea class="form-control" id="inputArea" rows="3"></textarea>
+    </div>
+    <button type="button" onclick="searchClick()" class="btn btn-secondary btn-lg btn-block">Rhyme It!</button>
+    </div>
+    <div class="col-md-6">
+    <div class="card border-secondary md-6"  >
+            <div class="card-body">
+                    <p class="card-text" id='outputArea'>Let me sing my song for you</p>
+                  </div>
+    </div>
+    </div>
+</div><br>
+<table background = "https://github.com/elasarto/final_project/blob/markov_lyrics_gen/pattern001.jpg?raw=true" width = "100%" height = "100">
+</table>
+</div>
+
+
+<script>
+
+    var input_text = document.getElementById('inputArea');
+    var output_text = document.getElementById('outputArea');
+
+    //Getting the names from app route
+    function get(url) {
+        var resp ;
+        var xmlHttp ;
+        resp  = '' ;
+        xmlHttp = new XMLHttpRequest();
+        if(xmlHttp != null)
+        {
+            xmlHttp.open( "GET", url, false );
+            xmlHttp.send( null );
+            resp = xmlHttp.responseText;
+        }
+        return resp ;
+    }
+
+    function searchClick() {
+        output_text.innerText = get('/' + input_text.value);
+        //output_text.innerText = input_text.value;
+        //console.log(input_text.value)
+        //console.log(output_text)
+    }
+
+
+</script>    
+
+</body>
+</html>
